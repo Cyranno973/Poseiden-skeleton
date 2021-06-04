@@ -20,13 +20,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("").permitAll()
+                .antMatchers("/bidList/**","/admin/*","/user/**","/trade/**","/ruleName/**","/rating/**","/curvePoint/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/user/**").permitAll()
                 .and().formLogin()
-                .defaultSuccessUrl("")
+                .defaultSuccessUrl("/bidList/list")
                 .and().logout()
-                .logoutUrl("")
-                .logoutSuccessUrl("/");
+                .logoutUrl("/app-logout")
+                .logoutSuccessUrl("/")
+                .and().exceptionHandling().accessDeniedPage("/app/error");
     }
 
     @Bean
