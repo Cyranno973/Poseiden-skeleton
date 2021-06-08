@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <title>Home</title>
 <link rel="stylesheet" href="../../css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 <div class="container">
@@ -40,6 +41,18 @@
 				</tr>
 			</thead>
 			<tbody>
+			<tr th:each="ruleName : ${ruleNames}">
+				<td th:text="${ruleName.id}"></td>
+				<td  th:text="${ruleName.description}"></td>
+				<td  th:text="${ruleName.json}"></td>
+				<td  th:text="${ruleName.template}"></td>
+				<td  th:text="${ruleName.sqlStr}"></td>
+				<td  th:text="${ruleName.sqlPart}"></td>
+				<td>
+					<a th:href="@{/ruleNamePoint/update/{id}(id= ${ruleName.id})}"><i class="far fa-edit"></i>Edit</a>
+					<a th:href="@{/ruleNamePoint/delete/{id}(id= ${ruleName.id})}"><i class="fas fa-trash"></i>Delete</a>
+				</td>
+			</tr>
 			<!-- TODO: Show all RuleName to the table, the Action column will have Edit & Delete buttons -->
 			</tbody>
 		</table>

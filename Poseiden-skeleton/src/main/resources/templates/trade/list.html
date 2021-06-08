@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <title>Home</title>
 <link rel="stylesheet" href="../../css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 <div class="container">
@@ -37,6 +38,16 @@
 				</tr>
 			</thead>
 			<tbody>
+			<tr th:each="trade : ${trades}">
+				<td th:text="${trade.tradeId}"></td>
+				<td  th:text="${trade.account}"></td>
+				<td  th:text="${trade.type}"></td>
+				<td  th:text="${trade.buyQuantity}"></td>
+				<td>
+					<a th:href="@{/tradePoint/update/{id}(id= ${trade.tradeId})}"><i class="far fa-edit"></i>Edit</a>
+					<a th:href="@{/tradePoint/delete/{id}(id= ${trade.tradeId})}"><i class="fas fa-trash"></i>Delete</a>
+				</td>
+			</tr>
 			<!-- TODO: Show all Trade to the table, the Action column will have Edit & Delete buttons -->
 			</tbody>
 		</table>
