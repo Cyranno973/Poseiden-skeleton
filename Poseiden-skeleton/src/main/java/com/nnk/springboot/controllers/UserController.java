@@ -1,5 +1,6 @@
 package com.nnk.springboot.controllers;
 
+import com.nnk.springboot.Service.UserService;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,18 @@ import javax.validation.Valid;
 
 @Controller
 public class UserController {
+    private final UserRepository userRepository;
+    private final UserService userService;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserController(UserRepository userRepository, UserService userService) {
+        this.userRepository = userRepository;
+        this.userService = userService;
+    }
 
     @RequestMapping("/user/list")
-    public String home(Model model)
-    {
-        model.addAttribute("users", userRepository.findAll());
+    public String home(Model model) {
+        model.addAttribute("users", userService.allUsers());
         return "user/list";
     }
 

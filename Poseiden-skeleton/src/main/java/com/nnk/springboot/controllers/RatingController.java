@@ -1,5 +1,7 @@
 package com.nnk.springboot.controllers;
 
+import com.nnk.springboot.Service.RatingService;
+import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,18 @@ import javax.validation.Valid;
 @Controller
 public class RatingController {
 
+    private final RatingService ratingService;
+    private final RatingRepository ratingRepository;
+
     @Autowired
-    private RatingRepository ratingRepository;
-    // TODO: Inject Rating service
+    public RatingController(RatingService ratingService, RatingRepository ratingRepository) {
+        this.ratingService = ratingService;
+        this.ratingRepository= ratingRepository;
+    }
 
     @RequestMapping("/rating/list")
-    public String home(Model model)
-    {
-        // TODO: find all Rating, add to model
-        model.addAttribute("ratings", ratingRepository.findAll());
+    public String home(Model model) {
+        model.addAttribute("ratings", ratingService.allRating());
         return "rating/list";
     }
 
@@ -35,26 +40,37 @@ public class RatingController {
 
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Rating list
+        if(!result.hasErrors()){
+            ratingRepository.save(rating);
+            model.addAttribute("curvePoint", rating);
+            return "redirect:/rating/list";
+        }
         return "rating/add";
     }
 
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Rating by Id and to model then show to the form
+        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Curvepoint ID" +id));
+        model.addAttribute("curvePoint", rating);
         return "rating/update";
     }
 
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
-                             BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Rating and return Rating list
+                               BindingResult result, Model model) {
+        if (result.hasErrors()){
+            return "rating/update";
+        }
+        rating.setId(id);
+        ratingRepository.save(rating);
+        model.addAttribute("curvePoint", rating);
         return "redirect:/rating/list";
     }
 
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Rating by Id and delete the Rating, return to Rating list
+        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Curvepoint ID" +id));
+        ratingRepository.delete(rating);
         return "redirect:/rating/list";
     }
 }

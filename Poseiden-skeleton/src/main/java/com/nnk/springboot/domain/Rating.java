@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "rating")
@@ -15,7 +16,7 @@ public class Rating {
     private String sandPRating;
     @NotBlank(message = "FitchRating is mandatory")
     private String fitchRating;
-    @NotBlank(message = "OrderNumber is mandatory")
+    @NotNull(message = "OrderNumber is mandatory")
     private Integer orderNumber;
 
     public Rating() {

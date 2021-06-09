@@ -1,5 +1,9 @@
 package com.nnk.springboot.Service;
 
-public interface UserService {
+import com.nnk.springboot.domain.User;
 
+import java.util.List;
+
+public interface UserService {
+    List<User> allUsers();
 }
