@@ -2,7 +2,6 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Service.RatingService;
 import com.nnk.springboot.domain.Rating;
-import com.nnk.springboot.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +17,15 @@ import javax.validation.Valid;
 public class RatingController {
 
     private final RatingService ratingService;
-    private final RatingRepository ratingRepository;
 
     @Autowired
-    public RatingController(RatingService ratingService, RatingRepository ratingRepository) {
+    public RatingController(RatingService ratingService) {
         this.ratingService = ratingService;
-        this.ratingRepository= ratingRepository;
     }
 
     @RequestMapping("/rating/list")
     public String home(Model model) {
+        // TODO: find all Rating, add to model
         model.addAttribute("ratings", ratingService.allRating());
         return "rating/list";
     }
@@ -39,37 +37,26 @@ public class RatingController {
 
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
-        if(!result.hasErrors()){
-            ratingRepository.save(rating);
-            model.addAttribute("curvePoint", rating);
-            return "redirect:/rating/list";
-        }
+        // TODO: check data valid and save to db, after saving return Rating list
         return "rating/add";
     }
 
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Rating ID" +id));
-        model.addAttribute("rating", rating);
+        // TODO: get Rating by Id and to model then show to the form
         return "rating/update";
     }
 
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                                BindingResult result, Model model) {
-        if (result.hasErrors()){
-            return "rating/update";
-        }
-        rating.setId(id);
-        ratingRepository.save(rating);
-        model.addAttribute("curvePoint", rating);
+        // TODO: check required fields, if valid call service to update Rating and return Rating list
         return "redirect:/rating/list";
     }
 
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Rating ID" +id));
-        ratingRepository.delete(rating);
+        // TODO: Find Rating by Id and delete the Rating, return to Rating list
         return "redirect:/rating/list";
     }
 }
