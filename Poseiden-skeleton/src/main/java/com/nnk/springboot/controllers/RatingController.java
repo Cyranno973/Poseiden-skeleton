@@ -3,6 +3,8 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.Service.RatingService;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import javax.validation.Valid;
 
 @Controller
 public class RatingController {
+    private static final Logger logger = LogManager.getLogger("You are on the RatingController");
 
     private final RatingService ratingService;
     private final RatingRepository ratingRepository;
@@ -23,23 +26,26 @@ public class RatingController {
     @Autowired
     public RatingController(RatingService ratingService, RatingRepository ratingRepository) {
         this.ratingService = ratingService;
-        this.ratingRepository= ratingRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     @RequestMapping("/rating/list")
     public String home(Model model) {
+        logger.info("methode home : /rating/list");
         model.addAttribute("ratings", ratingService.allRating());
         return "rating/list";
     }
 
     @GetMapping("/rating/add")
     public String addRatingForm(Rating rating) {
+        logger.info("methode addRatingForm : /rating/add");
         return "rating/add";
     }
 
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
-        if(!result.hasErrors()){
+        logger.info("methode validate : /rating/validate");
+        if (!result.hasErrors()) {
             ratingRepository.save(rating);
             model.addAttribute("curvePoint", rating);
             return "redirect:/rating/list";
@@ -49,7 +55,8 @@ public class RatingController {
 
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Rating ID" +id));
+        logger.info("methode showUpdateForm : /rating/update/{id}");
+        Rating rating = ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Rating ID" + id));
         model.addAttribute("rating", rating);
         return "rating/update";
     }
@@ -57,7 +64,8 @@ public class RatingController {
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                                BindingResult result, Model model) {
-        if (result.hasErrors()){
+        logger.info("methode updateRating : /rating/update/{id}");
+        if (result.hasErrors()) {
             return "rating/update";
         }
         rating.setId(id);
@@ -68,7 +76,8 @@ public class RatingController {
 
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Rating ID" +id));
+        logger.info("methode deleteRating : /rating/delete/{id}");
+        Rating rating = ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Rating ID" + id));
         ratingRepository.delete(rating);
         return "redirect:/rating/list";
     }
