@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <title>Home</title>
 <link rel="stylesheet" href="../../css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 <div class="container">
@@ -37,6 +38,16 @@
 				</tr>
 			</thead>
 			<tbody>
+			<tr th:each="curve : ${curvePoint}">
+				<td th:text="${curve.id}"></td>
+				<td  th:text="${curve.curveId}"></td>
+				<td  th:text="${curve.term}"></td>
+				<td  th:text="${curve.value}"></td>
+				<td>
+					<a th:href="@{/curvePoint/update/{id}(id= ${curve.id})}"><i class="far fa-edit"></i>Edit</a>
+					<a th:href="@{/curvePoint/delete/{id}(id= ${curve.id})}"><i class="fas fa-trash"></i>Delete</a>
+				</td>
+			</tr>
 			<!-- TODO: Show all CurvePoint to the table, the action column will have Edit & Delete buttons -->
 			</tbody>
 		</table>

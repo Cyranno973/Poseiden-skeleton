@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <title>Home</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="../../css/bootstrap.min.css" >
 </head>
 <body>
@@ -37,6 +38,16 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr th:each="bid : ${bidList}">
+					<td th:text="${bid.bidListId}"></td>
+					<td  th:text="${bid.account}"></td>
+					<td  th:text="${bid.type}"></td>
+					<td  th:text="${bid.bidQuantity}"></td>
+					<td>
+						<a th:href="@{/bidList/update/{id}(id= ${bid.bidListId})}"><i class="far fa-edit"></i>Edit</a>
+						<a th:href="@{/bidList/delete/{id}(id= ${bid.bidListId})}"><i class="fas fa-trash"></i>Delete</a>
+					</td>
+				</tr>
 				<!-- TODO: Show all Bids to the table, the Action column will have Edit & Delete buttons -->
 			</tbody>
 		</table>
