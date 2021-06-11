@@ -1,7 +1,6 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Service.RatingService;
-import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +49,8 @@ public class RatingController {
 
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Curvepoint ID" +id));
-        model.addAttribute("curvePoint", rating);
+        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Rating ID" +id));
+        model.addAttribute("rating", rating);
         return "rating/update";
     }
 
@@ -69,7 +68,7 @@ public class RatingController {
 
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Curvepoint ID" +id));
+        Rating rating = ratingRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid Rating ID" +id));
         ratingRepository.delete(rating);
         return "redirect:/rating/list";
     }
