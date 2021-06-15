@@ -3,6 +3,7 @@ package com.nnk.springboot.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Entity
 @Table(name = "rating")
@@ -17,6 +18,7 @@ public class Rating {
     @NotBlank(message = "FitchRating is mandatory")
     private String fitchRating;
     @NotNull(message = "OrderNumber is mandatory")
+    @Positive
     private Integer orderNumber;
 
     public Rating() {
