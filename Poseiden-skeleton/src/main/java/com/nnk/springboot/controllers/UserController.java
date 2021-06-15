@@ -1,6 +1,5 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.Service.UserService;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -20,20 +19,18 @@ import javax.validation.Valid;
 @Controller
 public class UserController {
     private final UserRepository userRepository;
-    private final UserService userService;
     private static final Logger logger = LogManager.getLogger("You are on the UserController");
 
 
     @Autowired
-    public UserController(UserRepository userRepository, UserService userService) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userService = userService;
     }
 
     @RequestMapping("/user/list")
     public String home(Model model) {
                 logger.info("methode home : user/list");
-        model.addAttribute("users", userService.allUsers());
+        model.addAttribute("users", userRepository.findAll());
         return "user/list";
     }
 

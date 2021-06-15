@@ -1,6 +1,5 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.Service.RatingService;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.repositories.RatingRepository;
 import org.apache.logging.log4j.LogManager;
@@ -20,19 +19,17 @@ import javax.validation.Valid;
 public class RatingController {
     private static final Logger logger = LogManager.getLogger("You are on the RatingController");
 
-    private final RatingService ratingService;
     private final RatingRepository ratingRepository;
 
     @Autowired
-    public RatingController(RatingService ratingService, RatingRepository ratingRepository) {
-        this.ratingService = ratingService;
+    public RatingController(RatingRepository ratingRepository) {
         this.ratingRepository = ratingRepository;
     }
 
     @RequestMapping("/rating/list")
     public String home(Model model) {
         logger.info("methode home : /rating/list");
-        model.addAttribute("ratings", ratingService.allRating());
+        model.addAttribute("ratings", ratingRepository.findAll());
         return "rating/list";
     }
 

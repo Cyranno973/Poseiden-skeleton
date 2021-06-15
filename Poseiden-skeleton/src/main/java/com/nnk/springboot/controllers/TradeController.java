@@ -1,6 +1,5 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.Service.TradeService;
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.repositories.TradeRepository;
 import org.apache.logging.log4j.LogManager;
@@ -18,21 +17,19 @@ import javax.validation.Valid;
 
 @Controller
 public class TradeController {
-    private final TradeService tradeService;
     private final TradeRepository tradeRepository;
     private static final Logger logger = LogManager.getLogger("You are on the TradeController");
 
 
     @Autowired
-    public TradeController(TradeService tradeService, TradeRepository tradeRepository) {
-        this.tradeService = tradeService;
+    public TradeController(TradeRepository tradeRepository) {
         this.tradeRepository = tradeRepository;
     }
 
     @RequestMapping("/trade/list")
     public String home(Model model) {
         logger.info("methode home : /trade/list");
-        model.addAttribute("trades", tradeService.allTrades());
+        model.addAttribute("trades", tradeRepository.findAll());
         return "trade/list";
     }
 
