@@ -16,7 +16,9 @@ public class User {
     @NotBlank(message = "Username is mandatory")
     private String username;
     @NotBlank(message = "Password is mandatory")
-    @Size(min=4, message = "la taille du Mpd doit etre minimun 4")
+    @Size(min=8, max=256)
+    @Pattern(regexp = "(.*)([A-Z]+)(.*)",message = "The password must have at least one upper case")
+    @Pattern(regexp = "(.*)([\\W]+)(.*)",message = "The password must have at least one symbol")
     private String password;
     @NotBlank(message = "FullName is mandatory")
     private String fullname;

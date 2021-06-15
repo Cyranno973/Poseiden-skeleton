@@ -29,6 +29,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/app-logout")
                 .logoutSuccessUrl("/")
                 .and().exceptionHandling().accessDeniedPage("/app/error");
+        httpSecurity.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .maximumSessions(1);
     }
 
     @Bean
