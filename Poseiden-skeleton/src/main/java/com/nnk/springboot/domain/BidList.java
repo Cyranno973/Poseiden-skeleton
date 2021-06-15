@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -17,9 +18,9 @@ public class BidList {
     @NotBlank(message = "Type is mandatory")
     private String type;
     @NotNull(message = "BidQuantity is mandatory")
-    @Positive
+    @Min(1)
     private Double bidQuantity;
-    @Positive
+    @Min(1)
     private Double askQuantity;
     private Double bid;
     private Double ask;

@@ -18,20 +18,18 @@ import javax.validation.Valid;
 
 @Controller
 public class BidListController {
-    private final BidService bidService;
     private final BidListRepository bidListRepository;
     private static final Logger logger = LogManager.getLogger("You are on the BidListController");
 
     @Autowired
-    public BidListController(BidService bidService, BidListRepository bidListRepository) {
-        this.bidService = bidService;
+    public BidListController(BidListRepository bidListRepository) {
         this.bidListRepository = bidListRepository;
     }
 
     @RequestMapping("/bidList/list")
     public String home(Model model) {
         logger.info("methode home : /bidList/list");
-        model.addAttribute("bidList", bidService.bidLists());
+        model.addAttribute("bidList", bidListRepository.findAll());
         return "bidList/list";
     }
 

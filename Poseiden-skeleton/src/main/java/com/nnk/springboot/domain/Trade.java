@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.sql.Timestamp;
@@ -17,9 +18,9 @@ public class Trade {
     private String account;
     @NotBlank(message = "Type is mandatory")
     private String type;
-    @Positive
+    @Min(1)
     private Double buyQuantity;
-    @Positive
+    @Min(1)
     private Double sellQuantity;
     @Positive
     private Double buyPrice;
