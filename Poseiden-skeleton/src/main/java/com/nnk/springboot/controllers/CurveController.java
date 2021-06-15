@@ -1,6 +1,5 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.Service.CurvePointService;
 import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
 import org.apache.logging.log4j.LogManager;
@@ -18,20 +17,18 @@ import javax.validation.Valid;
 
 @Controller
 public class CurveController {
-    private final CurvePointService curvePointService;
     private final CurvePointRepository curvePointRepository;
     private static final Logger logger = LogManager.getLogger("You are on the CurveController");
 
     @Autowired
-    public CurveController(CurvePointService curvePointService, CurvePointRepository curvePointRepository) {
-        this.curvePointService = curvePointService;
+    public CurveController(CurvePointRepository curvePointRepository) {
         this.curvePointRepository = curvePointRepository;
     }
 
     @RequestMapping("/curvePoint/list")
     public String home(Model model) {
         logger.info("methode home /curvePoint/list");
-        model.addAttribute("curvePoint", curvePointService.allCurvePoints());
+        model.addAttribute("curvePoint", curvePointRepository.findAll());
         return "curvePoint/list";
     }
 

@@ -1,6 +1,5 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.Service.RuleNameService;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.apache.logging.log4j.LogManager;
@@ -18,21 +17,19 @@ import javax.validation.Valid;
 
 @Controller
 public class RuleNameController {
-    private final RuleNameService ruleNameService;
     private final RuleNameRepository ruleNameRepository;
     private static final Logger logger = LogManager.getLogger("You are on the RuleNameController");
 
 
     @Autowired
-    public RuleNameController(RuleNameService ruleNameService, RuleNameRepository ruleNameRepository) {
-        this.ruleNameService = ruleNameService;
+    public RuleNameController(RuleNameRepository ruleNameRepository) {
         this.ruleNameRepository = ruleNameRepository;
     }
 
     @RequestMapping("/ruleName/list")
     public String home(Model model) {
         logger.info("methode home : /ruleName/list");
-        model.addAttribute("ruleNames", ruleNameService.allRuleNames());
+        model.addAttribute("ruleNames", ruleNameRepository.findAll());
         return "ruleName/list";
     }
 
