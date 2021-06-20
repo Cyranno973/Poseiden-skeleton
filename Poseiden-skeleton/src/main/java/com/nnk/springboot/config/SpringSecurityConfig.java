@@ -21,14 +21,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/bidList/**","/admin/*","/user/**","/trade/**","/ruleName/**","/rating/**","/curvePoint/**").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/user/**").permitAll()
+                .antMatchers("/bidList/**", "/admin/*", "/trade/**", "/ruleName/**", "/rating/**", "/curvePoint/**", "/user/update/**", "/user/delete/**").hasAnyAuthority("ADMIN")
+                .antMatchers("/", "/login", "/user/list").permitAll()
                 .and().formLogin()
                 .defaultSuccessUrl("/bidList/list")
                 .and().logout()
                 .logoutUrl("/app-logout")
                 .logoutSuccessUrl("/")
-                .and().exceptionHandling().accessDeniedPage("/app/error");
+                .and().exceptionHandling().accessDeniedPage("/403");
         httpSecurity.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .maximumSessions(1);

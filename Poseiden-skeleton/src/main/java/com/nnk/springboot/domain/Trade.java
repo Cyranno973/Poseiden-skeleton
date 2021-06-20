@@ -41,12 +41,13 @@ public class Trade {
     private String sourceListId;
     private String side;
 
-    public Trade(String account, String type) {
-        this.account = account;
-        this.type = type;
+    public Trade() {
     }
 
-    public Trade() {
+    public Trade(String account, String type, double buyQuantity) {
+        this.account = account;
+        this.type = type;
+        this.buyQuantity = buyQuantity;
     }
 
     public Integer getTradeId() {

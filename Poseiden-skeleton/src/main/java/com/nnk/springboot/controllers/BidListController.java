@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Controller
 public class BidListController {
     private final BidListRepository bidListRepository;
-    private static final Logger logger = LogManager.getLogger("You are on the BidListController");
+    private static final Logger logger = LogManager.getLogger(BidListController.class);
 
     @Autowired
     public BidListController(BidListRepository bidListRepository) {
