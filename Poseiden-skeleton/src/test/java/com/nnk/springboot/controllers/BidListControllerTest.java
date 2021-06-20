@@ -1,5 +1,8 @@
 package com.nnk.springboot.controllers;
 
+import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.repositories.BidListRepository;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,7 @@ public class BidListControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private BidListController bidListController;
+    BidListRepository bidListRepository;
 
     @WithMockUser(authorities = "USER")
     @Test
@@ -58,9 +61,10 @@ public class BidListControllerTest {
                 .with(csrf())
         ).andExpect(redirectedUrl("/bidList/list"));
     }
+
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void testUpdateBidListAdminHasError() throws Exception {
+    public void testValidateBidListAdminHasErrors() throws Exception {
         this.mockMvc.perform(post("/bidList/validate")
                 .param("Account", "BobAccount")
                 .param("type", "livret")
@@ -68,6 +72,7 @@ public class BidListControllerTest {
                 .with(csrf())
         ).andExpect(model().hasErrors());
     }
+
     @WithMockUser
     @Test
     public void testValidBidList() throws Exception {
@@ -77,5 +82,56 @@ public class BidListControllerTest {
                 .param("bidQuantity", "5")
                 .with(csrf())
         ).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void testShowUpdateBidListAdmin() throws Exception {
+        BidList bid = bidListRepository.save(new BidList("Account", "Type", 10.0d));
+
+        this.mockMvc.perform(get("/bidList/update/" + bid.getBidListId()))
+                .andExpect(model().attribute("bidList", Matchers.hasProperty("account", Matchers.equalTo("Account"))))
+                .andExpect(model().attribute("bidList", Matchers.hasProperty("type", Matchers.equalTo("Type"))))
+                .andExpect(model().attribute("bidList", Matchers.hasProperty("bidQuantity", Matchers.equalTo(10.0d))));
+    }
+
+    @WithMockUser
+    @Test
+    public void testShowUpdateBidList() throws Exception {
+        BidList bid = bidListRepository.save(new BidList("Account", "Type", 10.0d));
+
+        this.mockMvc.perform(get("/bidList/update/" + bid.getBidListId())).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void testUpdateBidListAdmin() throws Exception {
+        BidList bid = bidListRepository.save(new BidList("Account", "Type", 10.0d));
+        this.mockMvc.perform(post("/bidList/update/" + bid.getBidListId())
+                .param("account", "nuAccount")
+                .param("type", "nuType")
+                .param("bidQuantity", "12.0")
+                .with(csrf())
+        ).andExpect(redirectedUrl("/bidList/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void testUpdateBidListAdminHasError() throws Exception {
+        BidList bid = bidListRepository.save(new BidList("Account", "Type", 10.0d));
+        this.mockMvc.perform(post("/bidList/update/" + bid.getBidListId())
+                .param("account", "nuAccount")
+                .param("type", "nuType")
+                .param("bidQuantity", "A.0")
+                .with(csrf())
+        ).andExpect(model().hasErrors());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void testDeleteBidListAdmin() throws Exception {
+        BidList bid = bidListRepository.save(new BidList("Account", "Type", 10.0d));
+
+        this.mockMvc.perform(get("/bidList/delete/" + bid.getBidListId())).andExpect(status().isFound()).andReturn();
     }
 }
